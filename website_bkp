@@ -1,0 +1,17 @@
+#!/bin/bash
+##########
+## config
+localpath=/Library/WebServer/Documents/admin/bkp/
+sshsrv=user@host.tld
+remotepath=/home/www/host.tld/html/
+projectname=kunde_xyz
+mysql_user=root
+mysql_pass=password
+mysql_host=localhost
+mysql_dbname=kunde_xyz
+##########
+folder=${projectname}_bkp_$(date +"%Y_%m_%d_%H_%M_%S")
+mkdir $localpath$folder
+mkdir $localpath$folder/files
+ssh -C $sshsrv mysqldump -u$mysql_user -p$mysql_pass -h$mysql_host $mysql_dbname > $localpath$folder/$projectname.sql
+scp -rp $sshsrv:$remotepath $localpath$folder/files
